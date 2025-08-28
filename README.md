@@ -1,46 +1,51 @@
-# VelocityDRIVE Control Panel
+# VelocityDRIVE-SP Control Center
 
-Web-based control interface for Microchip VelocityDRIVE-SP devices.
+## LAN9662 웹 기반 제어 인터페이스
 
-## Features
+Microchip LAN9662 이더넷 스위치를 브라우저에서 직접 제어할 수 있는 강력한 웹 인터페이스입니다.
 
-- **Device Connection**: Connect to VelocityDRIVE devices via serial port
-- **Device Information**: View platform, firmware, and device type information
-- **YANG Operations**: Get, Set, Delete data and call RPC/Actions
-- **CoAP Protocol**: Send CoAP messages to the device
-- **Firmware Management**: View version and update firmware
-- **Real-time Console**: Monitor all operations and responses
+## 🚀 주요 기능
 
-## Installation
+### 통신 프로토콜
+- **MUP1 (Microchip UART Protocol #1)** 완벽 지원
+- **CoAP/CORECONF** (RFC7252) 프로토콜 구현
+- **WebSerial API**를 통한 브라우저-시리얼 직접 통신
+- **YANG/CBOR** 데이터 모델 지원 (RFC7951, RFC9254)
 
-### Prerequisites
+### 장치 제어
+- **인터페이스 관리**: 포트 설정, 속도, 듀플렉스, 상태 모니터링
+- **VLAN 구성**: IEEE 802.1Q VLAN 생성/수정/삭제
+- **TSN 기능**: PTP, TAS, PSFP, FRER 지원
 
-- Node.js (v14 or higher)
-- Microchip VelocityDRIVE CT CLI installed
-- VelocityDRIVE device connected via serial port
+## 🔧 설치 및 실행
 
-### Setup
-
-1. Clone the repository:
 ```bash
 git clone https://github.com/hwkim3330/mic.git
 cd mic
+python3 -m http.server 8000
 ```
 
-2. Install dependencies:
-```bash
-npm install
+브라우저에서 http://localhost:8000 접속
+
+## 📋 시스템 요구사항
+
+- Chrome 89+ 또는 Edge 89+ (WebSerial API 지원)
+- LAN9662 개발 보드
+
+## 📚 MUP1 프로토콜 상세
+
+### 프레임 구조
+```
++--------+--------+--------+--------+--------+--------+
+| SOF    | Type   | Seq    | Length | Payload | EOF    |
+| 0x3E   | 1 byte | 1 byte | 2 bytes| N bytes | 0x3C   |
++--------+--------+--------+--------+--------+--------+
 ```
 
-3. Start the server:
-```bash
-npm start
-```
+## 📄 라이선스
 
-4. Open your browser and navigate to:
-```
-http://localhost:3000
-```
+MIT License
 
-Visit GitHub Pages: https://hwkim3330.github.io/mic/
+## 🙏 감사의 말
 
+- Microchip Technology Inc. - VelocityDRIVE-SP 플랫폼
