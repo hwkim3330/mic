@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microchip VelocityDRIVE Control Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 VelocityDRIVE Control Panel</h1>
+            <p class="subtitle">Microchip VelocityDRIVE-SP Management Interface</p>
+        </header>
+
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">Connection:</span>
+                <span id="connectionStatus" class="status-value disconnected">Disconnected</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Device:</span>
+                <span id="deviceName" class="status-value">Not selected</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Device Selection -->
+            <section class="card">
+                <h2>Device Selection</h2>
+                <div class="form-group">
+                    <label for="devicePort">Serial Port:</label>
+                    <input type="text" id="devicePort" placeholder="/dev/ttyUSB0">
+                    <button id="connectBtn" class="btn btn-primary">Connect</button>
+                    <button id="listPortsBtn" class="btn btn-secondary">List Ports</button>
+                </div>
+                <div id="portsList" class="ports-list"></div>
+            </section>
+
+            <!-- Device Information -->
+            <section class="card">
+                <h2>Device Information</h2>
+                <div id="deviceInfo" class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Platform:</span>
+                        <span id="platformInfo">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Firmware:</span>
+                        <span id="firmwareInfo">--</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Type:</span>
+                        <span id="deviceTypeInfo">--</span>
+                    </div>
+                </div>
+                <button id="refreshInfoBtn" class="btn btn-secondary" disabled>Refresh Info</button>
+            </section>
+
+            <!-- YANG Operations -->
+            <section class="card">
+                <h2>YANG Operations</h2>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="get">Get Data</button>
+                    <button class="tab-btn" data-tab="set">Set Data</button>
+                    <button class="tab-btn" data-tab="delete">Delete Data</button>
+                    <button class="tab-btn" data-tab="rpc">RPC/Action</button>
+                </div>
+                
+                <div class="tab-content">
+                    <div id="get" class="tab-pane active">
+                        <div class="form-group">
+                            <label for="yangGetId">YANG Path:</label>
+                            <input type="text" id="yangGetId" placeholder="/ietf-system:system-state/platform">
+                            <button id="yangGetBtn" class="btn btn-primary" disabled>Get</button>
+                        </div>
+                    </div>
+                    
+                    <div id="set" class="tab-pane">
+                        <div class="form-group">
+                            <label for="yangSetId">YANG Path:</label>
+                            <input type="text" id="yangSetId" placeholder="/path/to/data">
+                        </div>
+                        <div class="form-group">
+                            <label for="yangSetValue">Value:</label>
+                            <input type="text" id="yangSetValue" placeholder="value">
+                            <button id="yangSetBtn" class="btn btn-primary" disabled>Set</button>
+                        </div>
+                    </div>
+                    
+                    <div id="delete" class="tab-pane">
+                        <div class="form-group">
+                            <label for="yangDeleteId">YANG Path:</label>
+                            <input type="text" id="yangDeleteId" placeholder="/path/to/data">
+                            <button id="yangDeleteBtn" class="btn btn-danger" disabled>Delete</button>
+                        </div>
+                    </div>
+                    
+                    <div id="rpc" class="tab-pane">
+                        <div class="form-group">
+                            <label for="yangRpcId">RPC/Action Path:</label>
+                            <input type="text" id="yangRpcId" placeholder="/path/to/rpc">
+                        </div>
+                        <div class="form-group">
+                            <label for="yangRpcValue">Parameters:</label>
+                            <textarea id="yangRpcValue" placeholder="JSON parameters"></textarea>
+                            <button id="yangRpcBtn" class="btn btn-primary" disabled>Call</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CoAP Operations -->
+            <section class="card">
+                <h2>CoAP Operations</h2>
+                <div class="form-group">
+                    <label for="coapMethod">Method:</label>
+                    <select id="coapMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="coapPath">Path:</label>
+                    <input type="text" id="coapPath" placeholder="/api/resource">
+                </div>
+                <div class="form-group">
+                    <label for="coapPayload">Payload (for POST/PUT):</label>
+                    <textarea id="coapPayload" placeholder="JSON payload"></textarea>
+                </div>
+                <button id="coapSendBtn" class="btn btn-primary" disabled>Send CoAP</button>
+            </section>
+
+            <!-- Firmware Management -->
+            <section class="card">
+                <h2>Firmware Management</h2>
+                <div class="form-group">
+                    <button id="getFirmwareBtn" class="btn btn-secondary" disabled>Get Version</button>
+                </div>
+                <div class="form-group">
+                    <label for="firmwareFile">Update Firmware:</label>
+                    <input type="file" id="firmwareFile">
+                    <button id="updateFirmwareBtn" class="btn btn-warning" disabled>Update Firmware</button>
+                </div>
+            </section>
+
+            <!-- Console Output -->
+            <section class="card">
+                <h2>Console Output</h2>
+                <div id="console" class="console"></div>
+                <button id="clearConsoleBtn" class="btn btn-secondary">Clear</button>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
