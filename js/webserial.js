@@ -9,7 +9,8 @@ class WebSerialHandler {
         this.reader = null;
         this.writer = null;
         this.keepReading = false;
-        this.mup1 = new MUP1Protocol();
+        // MUP1Protocol will be loaded from velocitydrive-protocol.js
+        this.mup1 = typeof MUP1Protocol !== 'undefined' ? new MUP1Protocol() : null;
         this.callbacks = {
             onConnect: null,
             onDisconnect: null,
